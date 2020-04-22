@@ -6,9 +6,9 @@ defmodule CurrencyController do
   """
 
   def currencyConverter({ from, to, amount }) when is_float(amount) do
-    exchangeResult = exchangeConversion({ from, to, amount })
-    exchangeResult2 = resultParser(exchangeResult)
-    exchangeResult2
+    result = exchangeConversion({ from, to, amount })
+    exchangeResult = resultParser(result)
+    exchangeResult
   end
 
   def splitValue({ amount, numberOfPersons }) when is_float(amount) and is_integer(numberOfPersons) do
