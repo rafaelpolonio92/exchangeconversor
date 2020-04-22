@@ -5,12 +5,13 @@ defmodule CurrencyController do
     The controller handle with CurrencyConverter functions and build de final result`.
   """
 
-  def currencyConverter({ from, to, amount }) do
+  def currencyConverter({ from, to, amount }) when is_float(amount) do
     exchangeResult = exchangeConversion({ from, to, amount })
-    exchangeResult
+    exchangeResult2 = resultParser(exchangeResult)
+    exchangeResult2
   end
 
-  def splitValue({ amount, numberOfPersons }) do
+  def splitValue({ amount, numberOfPersons }) when is_float(amount) and is_integer(numberOfPersons) do
     { formattedIntegerAmount, formattedDecimalAmount } = parsedAmount(amount)
     splittedValue = formattedSplitValue({ formattedIntegerAmount, formattedDecimalAmount, numberOfPersons})
     splittedValue

@@ -17,7 +17,8 @@ defmodule CurrencyConverter do
     stringAmount = Float.to_string(amount)
     splittedAmount = String.split(stringAmount, ".")
     integer = Enum.at(splittedAmount, 0)
-    decimal = Enum.at(splittedAmount, 1) || 0
+    decimal = Enum.at(splittedAmount, 1) || 00
+
     amountFormatted = %{
       integer: integer,
       decimal: decimal
@@ -41,10 +42,13 @@ defmodule CurrencyConverter do
     result
   end
 
-  def conversor({ integer, decimal, exchangeRate }) do
-    ((integer * 100) + decimal) * exchangeRate / Math.pow(10,8)
+  def resultParser(result) do
+    { integerAmount, decimalAmount } = parsedAmount(result)
+    stringInteger = Integer.to_string(integerAmount)
+    stringDecimal = Integer.to_string(decimalAmount)
+    joinedString = Enum.join([stringInteger, stringDecimal], ".")
+    String.to_float(joinedString)
   end
-
   def formattedSplitValue({ integer, decimal, numberOfPersons }) do
     (((integer * 100) + decimal) / numberOfPersons) / 100
   end
