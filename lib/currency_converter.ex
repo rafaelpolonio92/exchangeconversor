@@ -14,10 +14,11 @@ defmodule CurrencyConverter do
   end
 
   def amountFormatter(amount) do
-    stringAmount = Float.to_string(amount)
-    splittedAmount = String.split(stringAmount, ".")
-    integer = Enum.at(splittedAmount, 0)
-    decimal = Enum.at(splittedAmount, 1) || 00
+    format = amount
+    |>Float.to_string
+    |>String.split(".")
+    integer = Enum.at(format, 0)
+    decimal = Enum.at(format, 1) || 00
 
     amountFormatted = %{
       integer: integer,
@@ -28,8 +29,10 @@ defmodule CurrencyConverter do
 
   def parsedAmount(amount) do
     totalAmount = amountFormatter(amount)
-    integerAmount = decimalFormatter(totalAmount.integer)
-    decimalAmount = decimalFormatter(totalAmount.decimal)
+    integerAmount = totalAmount.integer
+    |> String.to_integer()
+    decimalAmount = totalAmount.decimal
+    |> decimalFormatter()
     { integerAmount, decimalAmount }
   end
   def exchangeConversion({ from, to, amount }) do
@@ -37,14 +40,17 @@ defmodule CurrencyConverter do
     { integerAmount, decimalAmount } = parsedAmount(amount)
     from = String.to_atom(from)
     to = String.to_atom(to)
-    exchangeRate = get_in(currencies, [from, :rate, to]) * Math.pow(10,6)
+    exchangeRate = get_in(currencies, [from, :rate, to])
+    |> Float.round(6)
+    Math.pow(10,6)
+
     result = ((integerAmount * 100) + decimalAmount) * exchangeRate / Math.pow(10,8)
     result
   end
 
   def resultParser(result) do
     { integerAmount, decimalAmount } = parsedAmount(result)
-    stringInteger = Integer.to_string(integerAmount)
+    stringInteger = integerAmount
     stringDecimal = Integer.to_string(decimalAmount)
     joinedString = Enum.join([stringInteger, stringDecimal], ".")
     String.to_float(joinedString)
