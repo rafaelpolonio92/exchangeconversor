@@ -4,7 +4,7 @@ defmodule CurrecyConverterTest do
   doctest CurrencyConverter
 
   test "currency conversion result" do
-    assert CurrencyController.currencyConverter({ "BRL", "AUD", 3.93 }) == 1.16
+    assert CurrencyController.currencyConverter({ "BRL", "AUD", 3.93 }) == 1.13
   end
 
   test "amountFormatter formatting result" do

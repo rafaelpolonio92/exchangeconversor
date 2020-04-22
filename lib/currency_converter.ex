@@ -4,13 +4,15 @@ defmodule CurrencyConverter do
     This file contains all business logic`.
   """
   def decimalFormatter(decimal) do
-    if String.length(decimal) > 2 do
-      formattedString = String.slice(decimal, 0, 2)
-      String.to_integer(formattedString)
-    else
-      String.to_integer(decimal)
+    cond do
+      String.length(decimal) > 2 ->
+        formattedString = String.slice(decimal, 0, 2)
+        String.to_integer(formattedString)
+      String.length(decimal) == 1 ->
+        String.to_integer("#{decimal}#{0}")
+      true ->
+        String.to_integer(decimal)
     end
-
   end
 
   def amountFormatter(amount) do
@@ -18,8 +20,7 @@ defmodule CurrencyConverter do
     |>Float.to_string
     |>String.split(".")
     integer = Enum.at(format, 0)
-    decimal = Enum.at(format, 1) || 00
-
+    decimal = Enum.at(format, 1) || "00"
     amountFormatted = %{
       integer: integer,
       decimal: decimal
@@ -38,11 +39,10 @@ defmodule CurrencyConverter do
   def exchangeConversion({ from, to, amount }) do
     currencies = currencyData()
     { integerAmount, decimalAmount } = parsedAmount(amount)
-    exchangeRate = currencies[from]["rate"][to]
+    rate = currencies[from]["rate"][to]
     |> Float.round(6)
-    Math.pow(10,6)
-
-    result = ((integerAmount * 100) + decimalAmount) * exchangeRate / Math.pow(10,8)
+    powerRate = rate * Math.pow(10,6)
+    result = ((integerAmount * 100) + decimalAmount) * powerRate / Math.pow(10,8)
     result
   end
 
@@ -55,5 +55,6 @@ defmodule CurrencyConverter do
   end
   def formattedSplitValue({ integer, decimal, numberOfPersons }) do
     (((integer * 100) + decimal) / numberOfPersons) / 100
+    |> Float.round(4)
   end
 end
