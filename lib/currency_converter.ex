@@ -38,9 +38,7 @@ defmodule CurrencyConverter do
   def exchangeConversion({ from, to, amount }) do
     currencies = currencyData()
     { integerAmount, decimalAmount } = parsedAmount(amount)
-    from = String.to_atom(from)
-    to = String.to_atom(to)
-    exchangeRate = get_in(currencies, [from, :rate, to])
+    exchangeRate = currencies[from]["rate"][to]
     |> Float.round(6)
     Math.pow(10,6)
 
