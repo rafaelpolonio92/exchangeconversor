@@ -5,9 +5,9 @@ defmodule CurrencyController do
     The controller handle with CurrencyConverter functions and build de final result`.
   """
 
-  def currencyConverter({ from, to, amount }) do
+  def currencyConverter({ to, amount }) do
     if is_float(amount) do
-      result = exchangeConversion({ from, to, amount })
+      result = exchangeConversion({ to, amount })
       exchangeResult = resultParser(result)
       exchangeResult
     else

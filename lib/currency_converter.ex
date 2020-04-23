@@ -36,10 +36,10 @@ defmodule CurrencyConverter do
     |> decimalFormatter()
     { integerAmount, decimalAmount }
   end
-  def exchangeConversion({ from, to, amount }) do
+  def exchangeConversion({ to, amount }) do
     currencies = currencyData()
     { integerAmount, decimalAmount } = parsedAmount(amount)
-    rate = currencies[from]["rate"][to]
+    rate = currencies["rate"][to]
     |> Float.round(6)
     powerRate = rate * Math.pow(10,6)
     result = ((integerAmount * 100) + decimalAmount) * powerRate / Math.pow(10,8)

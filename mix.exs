@@ -25,7 +25,8 @@ defmodule CurrecyConverter.MixProject do
       {:time_seer, "~> 0.0.6" },
       {:hackney, "~> 1.4"},
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
-      {:math, "~> 0.4.0"}
+      {:math, "~> 0.4.0"},
+      {:decimal, "~> 1.0", override: true}
     ]
   end
 end
