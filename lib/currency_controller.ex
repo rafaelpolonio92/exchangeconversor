@@ -11,7 +11,10 @@ defmodule CurrencyController do
       exchangeResult = resultParser(result)
       exchangeResult
     else
-      IO.puts("Invalid Amount")
+      {:error,
+      {Money.InvalidAmountError,
+       "Input amount #{amount} " <>
+         "is invalid. Amount must be a Float Value"}}
     end
   end
 
