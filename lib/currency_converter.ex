@@ -30,6 +30,7 @@ defmodule CurrencyConverter do
   end
 
   def parsedAmount(amount) do
+    amount = D.cast(amount)
     totalAmount = amountFormatter(amount)
     integerAmount = totalAmount.integer
     |> String.to_integer()
@@ -39,7 +40,6 @@ defmodule CurrencyConverter do
   end
   def exchangeConversion({ from, to, amount }) do
     currencies = currencyData()
-    amount = D.cast(amount)
     { integerAmount, decimalAmount } = parsedAmount(amount)
     rate = currencies[from]["rate"][to]
     |> D.cast()
@@ -48,12 +48,14 @@ defmodule CurrencyConverter do
     |> D.reduce()
     |> D.to_integer()
     result = ((integerAmount * 100) + decimalAmount) * rate / Math.pow(10,8)
-    |> Float.round(2)
+    |> D.cast()
+    |> D.round(2)
     result
   end
 
   def formattedSplitValue({ integer, decimal, numberOfPersons }) do
     (((integer * 100) + decimal) / numberOfPersons) / 100
-    |> Float.round(4)
+    |> D.cast()
+    |> D.round(2)
   end
 end

@@ -5,14 +5,12 @@ defmodule CurrencyController do
     The controller handle with CurrencyConverter functions and build de final result`.
   """
 
-  def currencyConverter({ from, to, amount }) when is_binary(to) and is_binary(from) do
+  def currencyConverter({ from, to, amount }) when is_bitstring(to) and is_bitstring(from) do
     exchangeResult = exchangeConversion({ from, to, amount })
     exchangeResult
   end
 
-  def currencyConverter(_), do: raise "Invalid Input"
-
-  def splitValue({ amount, numberOfPersons }) do
+  def splitValue({ amount, numberOfPersons }) when is_integer(numberOfPersons) do
     { formattedIntegerAmount, formattedDecimalAmount } = parsedAmount(amount)
     splittedValue = formattedSplitValue({ formattedIntegerAmount, formattedDecimalAmount, numberOfPersons})
     splittedValue
