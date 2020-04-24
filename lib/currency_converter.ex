@@ -4,7 +4,7 @@ defmodule CurrencyConverter do
   @moduledoc """
     This file contains all business logic`.
     We are converting the results from decimal to float for a better visualization in the screen
-    Ex: 3.16 instead #Decimal<3.17>
+    Ex: 3.17 instead #Decimal<3.17>
   """
   def decimalFormatter(decimal) do
     cond do
