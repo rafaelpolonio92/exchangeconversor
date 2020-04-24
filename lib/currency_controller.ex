@@ -5,26 +5,21 @@ defmodule CurrencyController do
     The controller handle with CurrencyConverter functions and build de final result`.
   """
 
-  def currencyConverter({ to, amount }) do
-    if is_float(amount) do
-      result = exchangeConversion({ to, amount })
-      exchangeResult = resultParser(result)
-      exchangeResult
-    else
-      {:error,
-      {Money.InvalidAmountError,
-       "Input amount #{amount} " <>
-         "is invalid. Amount must be a Float Value"}}
-    end
+  def currencyConverter({ from, to, amount }) when is_binary(to) and is_binary(from) do
+    exchangeResult = exchangeConversion({ from, to, amount })
+    exchangeResult
   end
 
+  def currencyConverter(_), do: raise "Invalid Input"
+
   def splitValue({ amount, numberOfPersons }) do
-    if is_float(amount) && is_integer(numberOfPersons) do
-      { formattedIntegerAmount, formattedDecimalAmount } = parsedAmount(amount)
-      splittedValue = formattedSplitValue({ formattedIntegerAmount, formattedDecimalAmount, numberOfPersons})
-      splittedValue
-    else
-      IO.puts("Invalid amount or number of persons")
-    end
+    { formattedIntegerAmount, formattedDecimalAmount } = parsedAmount(amount)
+    splittedValue = formattedSplitValue({ formattedIntegerAmount, formattedDecimalAmount, numberOfPersons})
+    splittedValue
   end
 end
+
+# {:error,
+# {Money.InvalidAmountError,
+#  "Input amount #{amount} " <>
+#    "is invalid. Amount must be a Float Value"}}

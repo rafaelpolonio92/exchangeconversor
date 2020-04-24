@@ -1,5 +1,6 @@
 defmodule CurrencyConverter do
   import Currencies
+  alias Decimal, as: D
   @moduledoc """
     This file contains all business logic`.
   """
@@ -17,7 +18,7 @@ defmodule CurrencyConverter do
 
   def amountFormatter(amount) do
     format = amount
-    |>Float.to_string
+    |>D.to_string
     |>String.split(".")
     integer = Enum.at(format, 0)
     decimal = Enum.at(format, 1) || "00"
@@ -36,23 +37,21 @@ defmodule CurrencyConverter do
     |> decimalFormatter()
     { integerAmount, decimalAmount }
   end
-  def exchangeConversion({ to, amount }) do
+  def exchangeConversion({ from, to, amount }) do
     currencies = currencyData()
+    amount = D.cast(amount)
     { integerAmount, decimalAmount } = parsedAmount(amount)
-    rate = currencies["rate"][to]
-    |> Float.round(6)
-    powerRate = rate * Math.pow(10,6)
-    result = ((integerAmount * 100) + decimalAmount) * powerRate / Math.pow(10,8)
+    rate = currencies[from]["rate"][to]
+    |> D.cast()
+    |> D.round(6)
+    |> D.mult(Math.pow(10, 6))
+    |> D.reduce()
+    |> D.to_integer()
+    result = ((integerAmount * 100) + decimalAmount) * rate / Math.pow(10,8)
+    |> Float.round(2)
     result
   end
 
-  def resultParser(result) do
-    { integerAmount, decimalAmount } = parsedAmount(result)
-    stringInteger = integerAmount
-    stringDecimal = Integer.to_string(decimalAmount)
-    joinedString = Enum.join([stringInteger, stringDecimal], ".")
-    String.to_float(joinedString)
-  end
   def formattedSplitValue({ integer, decimal, numberOfPersons }) do
     (((integer * 100) + decimal) / numberOfPersons) / 100
     |> Float.round(4)
