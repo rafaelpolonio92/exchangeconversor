@@ -1,13 +1,19 @@
 defmodule CurrencyController do
   import CurrencyConverter
-
+  import Currencies
+  import CurrencyExceptions
   @moduledoc """
     The controller handle with CurrencyConverter functions and build de final result`.
+    This version only supports conversion from BRL to other currencies
   """
 
   def currencyConverter({ from, to, amount }) when is_bitstring(to) and is_bitstring(from) do
-    exchangeResult = exchangeConversion({ from, to, amount })
-    exchangeResult
+    if check_currency(to) do
+      exchangeResult = exchangeConversion({ from, to, amount })
+      exchangeResult
+    else
+      currency_not_found(to)
+    end
   end
 
   def splitValue({ amount, numberOfPersons }) when is_integer(numberOfPersons) do
@@ -17,7 +23,4 @@ defmodule CurrencyController do
   end
 end
 
-# {:error,
-# {Money.InvalidAmountError,
-#  "Input amount #{amount} " <>
-#    "is invalid. Amount must be a Float Value"}}
+
