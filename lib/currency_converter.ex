@@ -3,6 +3,8 @@ defmodule CurrencyConverter do
   alias Decimal, as: D
   @moduledoc """
     This file contains all business logic`.
+    We are converting the results from decimal to float for a better visualization in the screen
+    Ex: 3.16 instead #Decimal<3.17>
   """
   def decimalFormatter(decimal) do
     cond do
@@ -17,31 +19,32 @@ defmodule CurrencyConverter do
   end
 
   def amountFormatter(amount) do
-    format = amount
+    formattedAmount = amount
     |>D.to_string
     |>String.split(".")
-    integer = Enum.at(format, 0)
-    decimal = Enum.at(format, 1) || "00"
+    integer = Enum.at(formattedAmount, 0)
+    decimal = Enum.at(formattedAmount, 1) || "00"
     amountFormatted = %{
-      integer: integer,
-      decimal: decimal
+      "integer" => integer,
+      "decimal" => decimal
     }
     amountFormatted
   end
 
   def parsedAmount(amount) do
-    amount = D.cast(amount)
-    totalAmount = amountFormatter(amount)
-    integerAmount = totalAmount.integer
+    decimalAmount = D.cast(amount)
+    totalAmount = amountFormatter(decimalAmount)
+    integerAmount = totalAmount["integer"]
     |> String.to_integer()
-    decimalAmount = totalAmount.decimal
+    decimalAmount = totalAmount["decimal"]
     |> decimalFormatter()
     { integerAmount, decimalAmount }
   end
+
   def exchangeConversion({ from, to, amount }) do
     currencies = currencyData()
     { integerAmount, decimalAmount } = parsedAmount(amount)
-    rate = currencies[from]["rate"][to]
+    rate = currencies[from |> String.upcase()]["rate"][to |> String.upcase()]
     |> D.cast()
     |> D.round(6)
     |> D.mult(Math.pow(10, 6))
@@ -51,11 +54,15 @@ defmodule CurrencyConverter do
     |> D.cast()
     |> D.round(2)
     result
+    # Converting the decimal result to from decimal o float for a better result visualization
+    |> D.to_float()
   end
 
   def formattedSplitValue({ integer, decimal, numberOfPersons }) do
     (((integer * 100) + decimal) / numberOfPersons) / 100
     |> D.cast()
     |> D.round(2)
+      # Converting the decimal result to from decimal o float for a better result visualization
+    |> D.to_float()
   end
 end
