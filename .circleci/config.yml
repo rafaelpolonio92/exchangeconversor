@@ -26,9 +26,6 @@ jobs:
             - ~/.mix
             - _build
       - run: mix compile --warnings-as-errors
-      - run: # special utility that stalls main process until DB is ready
-          name: Wait for DB
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run: mix test
       - run: mix format --check-formatted
       - run: mix credo --strict
