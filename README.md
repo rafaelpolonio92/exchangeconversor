@@ -14,9 +14,11 @@ This is a simple currency converter and split-amount script built for Stone chal
   1.06
 ```
 
-Currencies Codes must be bitstrings, with both lowercase or uppercase
-Amount must be numbers, but as float or inside a string
-Results are calculated as Decimal (better accuracy) but are printed as Float for better visualization
+1. Currencies Codes must be bitstrings, with both lowercase or uppercase.
+
+2. Amount must be numbers, but as float or inside a string.
+
+3. Results are calculated as Decimal (better accuracy) but are printed as Float for better visualization.
 
 
 ## Installation
