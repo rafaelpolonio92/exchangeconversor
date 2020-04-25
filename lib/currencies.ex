@@ -3,7 +3,7 @@ defmodule Currencies do
     This file contains currency datas`.
   """
 
-  def currency_data() do
+  def currency_data do
     %{
       "BRL" => %{
         "currency" => "Brazilian Real",
