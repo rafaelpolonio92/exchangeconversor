@@ -27,5 +27,4 @@ jobs:
             - _build
       - run: mix compile --warnings-as-errors
       - run: mix test
-      - run: mix format --check-formatted
-      - run: mix credo --strict
+      - run: mix credo --strict {Credo.Check.Refactor.MapInto, false}, {Credo.Check.Warning.LazyLogging, false}

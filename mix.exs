@@ -14,14 +14,14 @@ defmodule CurrecyConverter.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger],
+      extra_applications: [:logger]
     ]
   end
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:time_seer, "~> 0.0.6" },
+      {:time_seer, "~> 0.0.6"},
       {:hackney, "~> 1.4"},
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
       {:math, "~> 0.4.0"},
