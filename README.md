@@ -1,21 +1,36 @@
-# CurrecyConverter
+# Currency Converter
 
-**TODO: Add description**
+This is a simple currency converter and split-amount script built for Stone challenge
+
+## Example
+
+```elixir
+  For this version, you can only convert from BRL to other currencies
+  iex(1)> CurrencyController.currency_converter({ "brl", "EUR", "22.16" })
+  3.72
+
+  split values
+  iex(1)> CurrencyController.split_value({ 3.18, 3 })
+  1.06
+```
+
+Currencies Codes must be bitstrings, with both lowercase or uppercase
+Amount must be numbers, but as float or inside a string
+Results are calculated as Decimal (better accuracy) but are printed as Float for better visualization
+
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `currecy_converter` to your list of dependencies in `mix.exs`:
+  1. Clone de Project
 
-```elixir
-def deps do
-  [
-    {:currecy_converter, "~> 0.1.0"}
-  ]
-end
-```
+  2. Open command prompt in the project folder
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/currecy_converter](https://hexdocs.pm/currecy_converter).
+  3. run mix deps.get
 
+  4. run mix deps.compile
+
+  5. run mix compile
+
+  6. run iex -S mix to open the iex interactive
+
+  7. run Example comands
