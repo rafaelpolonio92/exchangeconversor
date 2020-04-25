@@ -1,0 +1,30 @@
+# Elixir CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-elixir/ for more details
+version: 2
+jobs:
+  build:
+    docker:
+      # specify the version here
+      - image: circleci/elixir:1.10.1
+        environment:
+          MIX_ENV: test
+
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run: mix local.hex --force # install Hex locally (without prompt)
+      - run: mix local.rebar --force # fetch a copy of rebar (without prompt)
+      - restore_cache:
+          key: deps-cache-{{ checksum "mix.lock" }}
+      - run: mix do deps.get, deps.compile
+      - save_cache:
+          key: deps-cache-{{ checksum "mix.lock" }}
+          paths:
+            - deps
+            - ~/.mix
+            - _build
+      - run: mix compile --warnings-as-errors
+      - run: mix test
+      - run: mix format --check-formatted
+      - run: mix credo --strict
